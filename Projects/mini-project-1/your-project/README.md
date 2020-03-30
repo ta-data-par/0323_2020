@@ -48,6 +48,4 @@ Other functions to:
 We worked on jupiter notebook.
 
 ## Links
-Include links to your repository, slides and kanban board. Feel free to include any other links associated with your project.
-
-[Repository](https://github.com/LudivineLacour/blackjack) 
+Link to the repository used to collaborate: [Repository](https://github.com/LudivineLacour/blackjack) 
