@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>publications</string>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>kcid</key>
+			<string>269666288679377033</string>
+			<key>name</key>
+			<string>localhost</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoK4HCBUWFxgZHSQpLTE0OFUkbnVsbNMJ
+			CgsMEBRXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6MNDg+AAoAD
+			gASjERITgAWABoAIgA1UdHlwZVRyb3dzVGtleXNfECZTZWxlY3Rp
+			b25EZXRhaWxUeXBlUHJpbWFyeUtleWVkRGV0YWlsc9MJCgsaGxyg
+			oIAH0h4fICFaJGNsYXNzbmFtZVgkY2xhc3Nlc18QE05TTXV0YWJs
+			ZURpY3Rpb25hcnmjICIjXE5TRGljdGlvbmFyeVhOU09iamVjdNIK
+			CyUooiYngAmAC4AM0gsqKyxZTlMuc3RyaW5ngApVYXVfaWTSHh8u
+			L18QD05TTXV0YWJsZVN0cmluZ6MuMCNYTlNTdHJpbmfSCyorM4AK
+			WHRpdGxlX2lk0h4fNTZeTlNNdXRhYmxlQXJyYXmjNTcjV05TQXJy
+			YXnSHh8iOaIiI18QD05TS2V5ZWRBcmNoaXZlctE8PVRkYXRhgAEA
+			CAARABoAIwAtADIANwBGAEwAUwBbAGYAbQBxAHMAdQB3AHsAfQB/
+			AIEAgwCIAI0AkgC7AMIAwwDEAMYAywDWAN8A9QD5AQYBDwEUARcB
+			GQEbAR0BIgEsAS4BNAE5AUsBTwFYAV0BXwFoAW0BfAGAAYgBjQGQ
+			AaIBpQGqAAAAAAAAAgEAAAAAAAAAPgAAAAAAAAAAAAAAAAAAAaw=
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1067, 629}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select 
+	step2.au_id, 
+	group_concat(distinct au_fname, " ", au_lname) as author_name, 
+	sum(advance+sales_royalties) as total_profits
+from 
+( select 
+	title_id, 
+	au_id, 
+	sum(advance) as advance, 
+	sum(sales_royalties) as sales_royalties
+from 
+( select 
+	titleauthor.title_id, au_id, 
+	round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, 
+	round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3;
+
+# Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table author_royalties
+select 
+	titleauthor.title_id, au_id, 
+	round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, 
+	round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id;
+
+create temporary table agg_author_royalties
+select 
+	title_id, 
+	au_id, 
+	sum(advance) as advance, 
+	sum(sales_royalties) as sales_royalties
+from author_royalties
+group by 1, 2;
+
+select 
+	agg_author_royalties.au_id, 
+	group_concat(distinct au_fname, " ", au_lname) as author_name, 
+	sum(advance+sales_royalties) as total_profits 
+from agg_author_royalties
+inner join authors on agg_author_royalties.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3;</string>
+			<key>table</key>
+			<string>titleauthor</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>select 
+	agg_author_royalties.au_id, 
+	group_concat(distinct au_fname, " ", au_lname) as author_name, 
+	sum(advance+sales_royalties) as total_profits 
+from agg_author_royalties
+inner join authors on agg_author_royalties.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3</string>
+		<string>select * from agg_author_royalties</string>
+		<string>create temporary table agg_author_royalties
+select 
+	title_id, 
+	au_id, 
+	sum(advance) as advance, 
+	sum(sales_royalties) as sales_royalties
+from author_royalties
+group by 1, 2</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table author_royalties
+select 
+	titleauthor.title_id, au_id, 
+	round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, 
+	round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id</string>
+		<string>select * from author_royalties</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table author_royalties
+select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id</string>
+		<string>select * from publications.step</string>
+		<string>select * from publications.step21</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table publications.step1
+select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table publications.step1
+select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id
+
+select * from publications.step1</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table step11
+select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id
+
+select * from step11</string>
+		<string>select * from step11</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table step1
+select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id</string>
+		<string># Challenge 2 - Alternative Solution	
+# Creating MySQL temporary tables and query the temporary tables in the subsequent steps
+
+create temporary table step1
+select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id
+
+select * from step1</string>
+		<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select step2.au_id, group_concat(distinct au_fname, " ", au_lname) as author_name, sum(advance+sales_royalties) as total_profits
+from 
+( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
+from 
+( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3</string>
+		<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select step2.au_id, group_concat(distinct au_fname, " ", au_lname), sum(advance+sales_royalties) as total_profits
+from 
+( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
+from 
+( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3</string>
+		<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select step2.au_id, group_concat(distinct au_fname, " ", distinct au_lname), sum(advance+sales_royalties) as total_profits
+from 
+( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
+from 
+( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3</string>
+		<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select step2.au_id, group_concat(au_fname, au_lname), sum(advance+sales_royalties) as total_profits
+from 
+( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
+from 
+( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1,2
+order by 3 desc
+limit 3</string>
+		<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select step2.au_id, group_concat(au_fname, au_lname), sum(advance+sales_royalties) as total_profits
+from 
+( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
+from 
+( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1
+order by 3 desc
+limit 3</string>
+		<string>## Lab | Advanced MySQL
+
+# Challenge 1 - Most Profiting Authors
+# who are the top 3 most profiting authors in the publications database?
+select step2.au_id, group_concat(au_fname, au_lname), sum(advance+sales_royalties) as total_profits
+from 
+( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
+from 
+( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
+from titleauthor
+left join titles on titleauthor.title_id=titles.title_id
+left join sales on titleauthor.title_id=sales.title_id) as step1
+group by 1, 2) as step2
+
+inner join authors on step2.au_id=authors.au_id
+group by 1
+order by 4 desc
+limit 3</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.19</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
