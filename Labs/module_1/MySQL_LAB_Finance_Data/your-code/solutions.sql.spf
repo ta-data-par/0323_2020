@@ -100,9 +100,49 @@ group by 1
 having diff &gt; 1
 order by 1;
 
-# Challenge 3 - Best Selling Districts</string>
+# Challenge 3 - Best Selling Districts
+select account.account_id, amount, district_id
+from account
+inner join loan on account.account_id = loan.account_id
+order by 2 desc;
+
+#Challenge 4 - Best Selling Districts UPDATED
+select district_id, sum(amount) as total_loan_paid
+from account
+inner join loan on account.account_id = loan.account_id
+group by 1
+order by 2 desc;
+
+# Challenge 5 - Best Selling Districts UPDATED
+
+	# not finished yet. Need tomorrow's class
+select 
+	district_id, 
+	avg(amount) as avg_loan_paid
+from account
+inner join loan on account.account_id = loan.account_id
+group by 1
+order by 2 desc;
+
+# Bonus Challenge - Salary/Loan balance
+
+	# not sure about this one - will check tomorrow
+select 
+	district_id, 
+	round(avg(loan.amount),2) as avg_loan,
+	round(avg(trans.amount),2) as avg_salary,
+	round(avg(`order`.amount),2) as avg_insurrance
+from account
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where 
+	trans.type = 'PRIJEM'
+	and `order`.k_symbol = 'POJISTNE'
+group by 1
+order by 2 desc;</string>
 			<key>table</key>
-			<string>order</string>
+			<string>trans</string>
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
 			<key>windowVerticalDividerPosition</key>
@@ -117,152 +157,153 @@ order by 1;
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(distinct bank_to), count(distinct account_to) as diff, min(amount) as rent
-from `order`
-where k_symbol = 'SIPO'
+		<string>select 
+	district_id, 
+	round(avg(loan.amount),2) as avg_loan,
+	round(avg(trans.amount),2) as avg_salary,
+	round(avg(`order`.amount),2) as avg_insurrance
+from account
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where 
+	trans.type = 'PRIJEM'
+	and `order`.k_symbol = 'POJISTNE'
 group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, min(amount) as rent
-from `order`
-where k_symbol = 'SIPO'
+order by 2 desc</string>
+		<string>select 
+	district_id, 
+	round(avg(loan.amount),2) as avg_loan,
+	round(avg(trans.amount),2) as avg_salary,
+	round(avg(`order`.amount),2) as avg_insurrance
+from account
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where 
+	type = 'PRIJEM'
+	and `order`.k_symbol = 'POJISTNE'
 group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, round(amount,5) as rent
-from `order`
-where k_symbol = 'SIPO'
+order by 2 desc</string>
+		<string>select 
+	district_id, 
+	round(avg(loan.amount),2) as avg_loan,
+	round(avg(trans.amount),2) as avg_salary,
+	round(avg(`order`.amount),2) as insurrance_order
+from account
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where 
+	type = 'PRIJEM'
+	and `order`.k_symbol = 'POJISTNE'
 group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, round(min(amount),5) as rent
-from `order`
-where k_symbol = 'SIPO'
+order by 2 desc</string>
+		<string>select 
+	district_id, 
+	avg(loan.amount) as avg_loan,
+	avg(trans.amount) as avg_salary,
+	avg(`order`.amount) as insurrance_order
+from account
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where 
+	type = 'PRIJEM'
+	and `order`.k_symbol = 'POJISTNE'
 group by 1
-having diff &gt; 1
+order by 2 desc</string>
+		<string>select district_id, avg(`order`.amount) as insurrance_order
+from account
+inner join `order` on account.account_id = `order`.account_id
+where `order`.k_symbol = 'POJISTNE'
+group by 1</string>
+		<string>select district_id, account.account_id, `order`.amount as insurrance_order
+from account
+inner join `order` on account.account_id = `order`.account_id
+where `order`.k_symbol = 'POJISTNE'
+order by 1,2</string>
+		<string>select district_id, account.account_id, trans.amount as insurrance_trans, `order`.amount as insurrance_order
+from account
+inner join `order` on account.account_id = `order`.account_id
+where `order`.k_symbol = 'POJISTNE'
+order by 1,2</string>
+		<string>select district_id, account.account_id, trans.amount as insurrance_trans, `order`.amount as insurrance_order
+from account
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where trans.k_symbol = 'POJISTNE' and `order`.k_symbol = 'POJISTNE'
+order by 1,2</string>
+		<string>select district_id, account.account_id, trans.amount as insurrance_trans, `order`.amount as insurrance_order
+from account
+inner join trans on account.account_id = trans.account_id
+inner join `order` on account.account_id = `order`.account_id
+where k_symbol = 'POJISTNE'
+order by 1,2</string>
+		<string>select district_id, account.account_id, amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'
+order by 1,2</string>
+		<string>select district_id, account.account_id, amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'
 order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, min(amount, 2) as rent
-from `order`
-where k_symbol = 'SIPO'
+		<string>select district_id, account.account_id, amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'
+group by 1,3
+order by 1</string>
+		<string>select district_id, count(account.account_id), amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'
+group by 1,3
+order by 1</string>
+		<string>select district_id, count(distinct account.account_id), amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'
+group by 1,3
+order by 1</string>
+		<string>select district_id, count(account.account_id), amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'
+group by 1,3</string>
+		<string>select district_id, count(account.account_id), amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'</string>
+		<string>select district_id, account.account_id, amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'</string>
+		<string>select district_id, account_id, amount
+from account
+inner join trans on account.account_id = trans.account_id
+where k_symbol = 'POJISTNE'</string>
+		<string>select 
+	district_id, 
+	avg(loan.amount) as avg_loan,
+	avg(trans.amount) as avg_salary
+from account
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+where type = 'PRIJEM'
 group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, min(amount)
-from `order`
-where k_symbol = 'SIPO'
+order by 2 desc</string>
+		<string>select 
+	district_id, 
+	avg(loan.amount) as avg_loan,
+	avg(trans.amount) as avg_salary
+inner join loan on account.account_id = loan.account_id
+inner join trans on account.account_id = trans.account_id
+where type = 'PRIJEM'
 group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, amount 
-from `order`
-where k_symbol = 'SIPO'
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, amount 
-from `order`
-where k_symbol = 'SIPO'
-group by 1,4
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, amount 
-from `order`
-where k_symbol = 'SIPO'
-group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, max(amount) 
-from `order`
-where k_symbol = 'SIPO'
-group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, sum(amount) 
-from `order`
-where k_symbol = 'SIPO'
-group by 1
-having diff &gt; 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, avg(amount) 
-from `order`
-where k_symbol = 'SIPO'
-group by 1
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(distinct account_to) as diff, avg(amount) 
-from `order`
-where k_symbol = 'SIPO'
-group by 1,2
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, group_concat(bank_to), count(dictinct account_to) as diff, avg(amount) 
-from `order`
-where k_symbol = 'SIPO'
-group by 1,2
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, bank_to, account_to,sum(amount) 
-from `order`
-where k_symbol = 'SIPO'
-group by 1,2,3
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, bank_to, account_to,sum(amount) 
-from `order`
-where k_symbol = 'LEASING'
-group by 1,2,3
-order by 1</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, bank_to, account_to,sum(amount) 
-from `order`
-where k_symbol = 'LEASING'
-group by 1,2,3</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select account_id, bank_to, account_to,sum(amount) 
-from `order`
-where k_symbol = 'LEASING'
-group by account_id</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select * 
-from `order`
-where k_symbol = 'LEASING'
-#group by account_id;</string>
-		<string># Challenge 2 - How many people changed their place of residence?
-
-select * 
-from `order`
-where k_symbol = 'LEASING'
-group by account_id</string>
+order by 2 desc</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
