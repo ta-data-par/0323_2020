@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>bank</string>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>kcid</key>
+			<string>269666288679377033</string>
+			<key>name</key>
+			<string>localhost</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8mb4</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJX
+			TlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAF
+			gAdUdHlwZVRyb3dzXxAdU2VsZWN0aW9uRGV0YWlsVHlwZU5TSW5k
+			ZXhTZXTSFwsYGVxOU1JhbmdlQ291bnQQAIAG0hscHR5aJGNsYXNz
+			bmFtZVgkY2xhc3Nlc1pOU0luZGV4U2V0oh8gWk5TSW5kZXhTZXRY
+			TlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVk
+			QXJjaGl2ZXLRJidUZGF0YYABAAgAEQAaACMALQAyADcAQABGAE0A
+			VQBgAGcAagBsAG4AcQBzAHUAdwB8AIEAoQCmALMAtQC3ALwAxwDQ
+			ANsA3gDpAPIA9wEEAQcBGQEcASEAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1067, 629}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>use bank;
+
+# Lab | MySQL Select Finance Data
+
+# Challenge 1 - What is the most successful district?
+
+select district_id, count(account_id) as ac_freq
+from account
+group by 1
+order by 2 desc
+limit 5;
+
+# Challenge 2 - How many people changed their place of residence?
+
+select 
+	account_id, 
+	group_concat(distinct bank_to), 
+	count(distinct account_to) as diff, 
+	min(amount) as rent
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1;
+
+# Challenge 3 - Best Selling Districts</string>
+			<key>table</key>
+			<string>order</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(distinct bank_to), count(distinct account_to) as diff, min(amount) as rent
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, min(amount) as rent
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, round(amount,5) as rent
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, round(min(amount),5) as rent
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, min(amount, 2) as rent
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, min(amount)
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, amount 
+from `order`
+where k_symbol = 'SIPO'
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, amount 
+from `order`
+where k_symbol = 'SIPO'
+group by 1,4
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, amount 
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, max(amount) 
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, sum(amount) 
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+having diff &gt; 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, avg(amount) 
+from `order`
+where k_symbol = 'SIPO'
+group by 1
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(distinct account_to) as diff, avg(amount) 
+from `order`
+where k_symbol = 'SIPO'
+group by 1,2
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, group_concat(bank_to), count(dictinct account_to) as diff, avg(amount) 
+from `order`
+where k_symbol = 'SIPO'
+group by 1,2
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, bank_to, account_to,sum(amount) 
+from `order`
+where k_symbol = 'SIPO'
+group by 1,2,3
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, bank_to, account_to,sum(amount) 
+from `order`
+where k_symbol = 'LEASING'
+group by 1,2,3
+order by 1</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, bank_to, account_to,sum(amount) 
+from `order`
+where k_symbol = 'LEASING'
+group by 1,2,3</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select account_id, bank_to, account_to,sum(amount) 
+from `order`
+where k_symbol = 'LEASING'
+group by account_id</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select * 
+from `order`
+where k_symbol = 'LEASING'
+#group by account_id;</string>
+		<string># Challenge 2 - How many people changed their place of residence?
+
+select * 
+from `order`
+where k_symbol = 'LEASING'
+group by account_id</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.19</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
