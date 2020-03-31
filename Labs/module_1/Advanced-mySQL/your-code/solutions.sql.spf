@@ -56,21 +56,17 @@
 			<integer>1</integer>
 			<key>contentSelection</key>
 			<data>
-			YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFy
-			Y2hpdmVyVCR0b3ASAAGGoK4HCBUWFxgZHSQpLTE0OFUkbnVsbNMJ
-			CgsMEBRXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6MNDg+AAoAD
-			gASjERITgAWABoAIgA1UdHlwZVRyb3dzVGtleXNfECZTZWxlY3Rp
-			b25EZXRhaWxUeXBlUHJpbWFyeUtleWVkRGV0YWlsc9MJCgsaGxyg
-			oIAH0h4fICFaJGNsYXNzbmFtZVgkY2xhc3Nlc18QE05TTXV0YWJs
-			ZURpY3Rpb25hcnmjICIjXE5TRGljdGlvbmFyeVhOU09iamVjdNIK
-			CyUooiYngAmAC4AM0gsqKyxZTlMuc3RyaW5ngApVYXVfaWTSHh8u
-			L18QD05TTXV0YWJsZVN0cmluZ6MuMCNYTlNTdHJpbmfSCyorM4AK
-			WHRpdGxlX2lk0h4fNTZeTlNNdXRhYmxlQXJyYXmjNTcjV05TQXJy
-			YXnSHh8iOaIiI18QD05TS2V5ZWRBcmNoaXZlctE8PVRkYXRhgAEA
-			CAARABoAIwAtADIANwBGAEwAUwBbAGYAbQBxAHMAdQB3AHsAfQB/
-			AIEAgwCIAI0AkgC7AMIAwwDEAMYAywDWAN8A9QD5AQYBDwEUARcB
-			GQEbAR0BIgEsAS4BNAE5AUsBTwFYAV0BXwFoAW0BfAGAAYgBjQGQ
-			AaIBpQGqAAAAAAAAAgEAAAAAAAAAPgAAAAAAAAAAAAAAAAAAAaw=
+			YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJX
+			TlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAF
+			gAdUdHlwZVRyb3dzXxAdU2VsZWN0aW9uRGV0YWlsVHlwZU5TSW5k
+			ZXhTZXTSFwsYGVxOU1JhbmdlQ291bnQQAIAG0hscHR5aJGNsYXNz
+			bmFtZVgkY2xhc3Nlc1pOU0luZGV4U2V0oh8gWk5TSW5kZXhTZXRY
+			TlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVk
+			QXJjaGl2ZXLRJidUZGF0YYABAAgAEQAaACMALQAyADcAQABGAE0A
+			VQBgAGcAagBsAG4AcQBzAHUAdwB8AIEAoQCmALMAtQC3ALwAxwDQ
+			ANsA3gDpAPIA9wEEAQcBGQEcASEAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
 			</data>
 			<key>contentSortColIsAsc</key>
 			<true/>
@@ -137,9 +133,20 @@ from agg_author_royalties
 inner join authors on agg_author_royalties.au_id=authors.au_id
 group by 1
 order by 3 desc
+limit 3;
+
+# Challenge 3 
+# Elevating from your solution in Challenge 1 &amp; 2, create a permanent table named most_profiting_authors to hold the data about the most profiting authors.
+
+create table most_profiting_authors
+as 
+select 
+	agg_author_royalties.au_id,
+	sum(advance+sales_royalties) as profits
+from agg_author_royalties
+group by 1
+order by 2 desc
 limit 3;</string>
-			<key>table</key>
-			<string>titleauthor</string>
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
 			<key>windowVerticalDividerPosition</key>
@@ -154,6 +161,55 @@ limit 3;</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>select * from most_profiting_authors</string>
+		<string># Challenge 3 
+# Elevating from your solution in Challenge 1 &amp; 2, create a permanent table named most_profiting_authors to hold the data about the most profiting authors.
+
+create table most_profiting_authors
+as 
+select 
+	agg_author_royalties.au_id,
+	sum(advance+sales_royalties) as profits
+from agg_author_royalties
+group by 1
+order by 2 desc
+limit 3</string>
+		<string># Challenge 3 
+# Elevating from your solution in Challenge 1 &amp; 2, create a permanent table named most_profiting_authors to hold the data about the most profiting authors.
+
+create table publications.most_profiting_authors
+as 
+select 
+	agg_author_royalties.au_id,
+	sum(advance+sales_royalties) as profits
+from agg_author_royalties
+group by 1
+order by 2 desc
+limit 3</string>
+		<string># Challenge 3 
+# Elevating from your solution in Challenge 1 &amp; 2, create a permanent table named most_profiting_authors to hold the data about the most profiting authors.
+
+#create table most_profiting_authors
+#as 
+select 
+	agg_author_royalties.au_id,
+	sum(advance+sales_royalties) as profits
+from agg_author_royalties
+group by 1
+order by 2 desc
+limit 3</string>
+		<string># Challenge 3 
+# Elevating from your solution in Challenge 1 &amp; 2, create a permanent table named most_profiting_authors to hold the data about the most profiting authors.
+
+#create table most_profiting_authors
+#as 
+select 
+	agg_author_royalties.au_id,
+	sum(advance+sales_royalties) as profits
+from agg_author_royalties
+group by 1
+order by 3 desc
+limit 3</string>
 		<string>select 
 	agg_author_royalties.au_id, 
 	group_concat(distinct au_fname, " ", au_lname) as author_name, 
@@ -258,96 +314,6 @@ group by 1, 2) as step2
 inner join authors on step2.au_id=authors.au_id
 group by 1
 order by 3 desc
-limit 3</string>
-		<string>## Lab | Advanced MySQL
-
-# Challenge 1 - Most Profiting Authors
-# who are the top 3 most profiting authors in the publications database?
-select step2.au_id, group_concat(distinct au_fname, " ", au_lname), sum(advance+sales_royalties) as total_profits
-from 
-( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
-from 
-( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
-from titleauthor
-left join titles on titleauthor.title_id=titles.title_id
-left join sales on titleauthor.title_id=sales.title_id) as step1
-group by 1, 2) as step2
-
-inner join authors on step2.au_id=authors.au_id
-group by 1
-order by 3 desc
-limit 3</string>
-		<string>## Lab | Advanced MySQL
-
-# Challenge 1 - Most Profiting Authors
-# who are the top 3 most profiting authors in the publications database?
-select step2.au_id, group_concat(distinct au_fname, " ", distinct au_lname), sum(advance+sales_royalties) as total_profits
-from 
-( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
-from 
-( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
-from titleauthor
-left join titles on titleauthor.title_id=titles.title_id
-left join sales on titleauthor.title_id=sales.title_id) as step1
-group by 1, 2) as step2
-
-inner join authors on step2.au_id=authors.au_id
-group by 1
-order by 3 desc
-limit 3</string>
-		<string>## Lab | Advanced MySQL
-
-# Challenge 1 - Most Profiting Authors
-# who are the top 3 most profiting authors in the publications database?
-select step2.au_id, group_concat(au_fname, au_lname), sum(advance+sales_royalties) as total_profits
-from 
-( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
-from 
-( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
-from titleauthor
-left join titles on titleauthor.title_id=titles.title_id
-left join sales on titleauthor.title_id=sales.title_id) as step1
-group by 1, 2) as step2
-
-inner join authors on step2.au_id=authors.au_id
-group by 1,2
-order by 3 desc
-limit 3</string>
-		<string>## Lab | Advanced MySQL
-
-# Challenge 1 - Most Profiting Authors
-# who are the top 3 most profiting authors in the publications database?
-select step2.au_id, group_concat(au_fname, au_lname), sum(advance+sales_royalties) as total_profits
-from 
-( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
-from 
-( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
-from titleauthor
-left join titles on titleauthor.title_id=titles.title_id
-left join sales on titleauthor.title_id=sales.title_id) as step1
-group by 1, 2) as step2
-
-inner join authors on step2.au_id=authors.au_id
-group by 1
-order by 3 desc
-limit 3</string>
-		<string>## Lab | Advanced MySQL
-
-# Challenge 1 - Most Profiting Authors
-# who are the top 3 most profiting authors in the publications database?
-select step2.au_id, group_concat(au_fname, au_lname), sum(advance+sales_royalties) as total_profits
-from 
-( select title_id, au_id, sum(advance) as advance, sum(sales_royalties) as sales_royalties
-from 
-( select titleauthor.title_id, au_id, round(ifnull(titles.advance*titleauthor.royaltyper/100,0),1) as advance, round(ifnull(titles.price*sales.qty*titles.royalty/100 * titleauthor.royaltyper/100,0),2) as sales_royalties
-from titleauthor
-left join titles on titleauthor.title_id=titles.title_id
-left join sales on titleauthor.title_id=sales.title_id) as step1
-group by 1, 2) as step2
-
-inner join authors on step2.au_id=authors.au_id
-group by 1
-order by 4 desc
 limit 3</string>
 	</array>
 	<key>rdbms_type</key>
