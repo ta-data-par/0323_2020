@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>bank</string>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>kcid</key>
+			<string>269666288679377033</string>
+			<key>name</key>
+			<string>localhost</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8mb4</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJX
+			TlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAF
+			gAdUdHlwZVRyb3dzXxAdU2VsZWN0aW9uRGV0YWlsVHlwZU5TSW5k
+			ZXhTZXTSFwsYGVxOU1JhbmdlQ291bnQQAIAG0hscHR5aJGNsYXNz
+			bmFtZVgkY2xhc3Nlc1pOU0luZGV4U2V0oh8gWk5TSW5kZXhTZXRY
+			TlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVk
+			QXJjaGl2ZXLRJidUZGF0YYABAAgAEQAaACMALQAyADcAQABGAE0A
+			VQBgAGcAagBsAG4AcQBzAHUAdwB8AIEAoQCmALMAtQC3ALwAxwDQ
+			ANsA3gDpAPIA9wEEAQcBGQEcASEAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1067, 629}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>use bank;
+
+# Lab | SQL - Selection
+# 1.From the client table, what are the ids of the first 5 clients from disrict_id 1?
+select client_id
+from client
+where district_id = 1
+limit 5;
+
+# 2.From the client table, what is the id of the last client from district_id 72?
+select client_id
+from client
+where district_id = 72
+order by 1 DESC
+limit 1;
+
+# 3. From the loan table, what are the 3 lowest amounts?
+select amount
+from loan
+order by 1 asc
+limit 3;
+
+# 4. From the loan table, what are the possible values for status, ordered alphabetically in ascending order?
+select status
+from loan
+group by 1
+order by 1 asc;
+
+# 5. From the loans table, what is the loan_id of the highest payment received?
+select loan_id
+from loan
+order by payments desc
+limit 1;
+
+# 6. From the loans table, what is the loan amount of the lowest 5 account_ids. Show the account_id and the corresponding amount
+select account_id, amount
+from loan
+order by 1
+limit 5;
+
+# 7. From the loans table, which are the account_ids with the lowest loan amount have a loan duration of 60?
+select account_id
+from loan
+where duration = 60
+order by amount asc
+limit 5;
+
+# 8.From the table, what are the unique values of k_symbol?
+select k_symbol
+from `order`
+group by 1;
+
+# 9. From the order table, which are the order_ids from the client with the account_id 34?
+select order_id
+from `order`
+where account_id = 34;
+
+# 10. From the order table, which account_ids were responsible for orders between order_id 29540 and order_id 29560 (inclusive)?
+select `account_id`
+from `order`
+where order_id between 29540 and 29560
+group by 1;
+
+# 11. From the order table, what are the individual amounts that were sent to (account_to) id 30067122?
+select amount
+from `order`
+where account_to = 30067122;
+
+# 12. From the trans table, show the trans_id, date, type and amount of the 10 first transactions from account_id = 793 in chronological order, from newest to oldest.
+select trans_id, `date`, `type`, amount
+from trans
+where account_id = 793
+order by 2 DESC
+limit 10;</string>
+			<key>table</key>
+			<string>order</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string># 12. From the trans table, show the trans_id, date, type and amount of the 10 first transactions from account_id = 793 in chronological order, from newest to oldest.
+select trans_id, `date`, `type`, amount
+from trans
+where account_id = 793
+order by 2 DESC
+limit 10</string>
+		<string># 12. From the trans table, show the trans_id, date, type and amount of the 10 first transactions from account_id = 793 in chronological order, from newest to oldest.
+select trans_id, `date`, `type`, amount
+from trans
+where accound_id = 793
+order by 2 DESC
+limit 10</string>
+		<string># 11. From the order table, what are the individual amounts that were sent to (account_to) id 30067122?
+select amount
+from `order`
+where account_to = 30067122</string>
+		<string># 10. From the order table, which account_ids were responsible for orders between order_id 29540 and order_id 29560 (inclusive)?
+select `account_id`
+from `order`
+where order_id between 29540 and 29560
+group by 1</string>
+		<string>group by 1</string>
+		<string># 10. From the order table, which account_ids were responsible for orders between order_id 29540 and order_id 29560 (inclusive)?
+select `account_id`
+from `order`
+where order_id between 29540 and 29560</string>
+		<string># 9. From the order table, which are the order_ids from the client with the account_id 34?
+select order_id
+from `order`
+where account_id = 34</string>
+		<string># 8.From the table, what are the unique values of k_symbol?
+select k_symbol
+from `order`
+group by 1</string>
+		<string>select * from order</string>
+		<string>select * from loan</string>
+		<string>select * from `order`</string>
+		<string>use bank</string>
+		<string># 8.From the table, what are the unique values of k_symbol?
+select k_symbol
+from bank.order
+group by 1</string>
+		<string># 8.From the table, what are the unique values of k_symbol?
+select k_symbol
+from bank.order</string>
+		<string># 8.From the table, what are the unique values of k_symbol?
+select k_symbol
+from order</string>
+		<string># 8.From the order table, what are the unique values of k_symbol?
+select k_symbol
+from order</string>
+		<string># 8.From the order table, what are the unique values of k_symbol?
+select * 
+from order</string>
+		<string># 8.From the order table, what are the unique values of k_symbol?
+select * 
+from bank.order</string>
+		<string>use bank
+# Lab | SQL - Selection
+# 1.From the client table, what are the ids of the first 5 clients from disrict_id 1?
+select client_id
+from client
+where district_id = 1
+limit 5</string>
+		<string># 8.From the order table, what are the unique values of k_symbol?
+select * 
+from account</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.19</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
