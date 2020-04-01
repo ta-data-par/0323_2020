@@ -11,7 +11,7 @@
 		<key>connection</key>
 		<dict>
 			<key>database</key>
-			<string>finance</string>
+			<string>bank</string>
 			<key>host</key>
 			<string>127.0.0.1</string>
 			<key>kcid</key>
@@ -75,7 +75,7 @@
 			<key>isToolbarVisible</key>
 			<true/>
 			<key>queries</key>
-			<string>use finance;
+			<string>use bank;
 # Lab | SQL - Aggregation
 
 # 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
@@ -111,7 +111,56 @@ select date, duration, count(loan_id)
 from loan
 where date like '9712%'
 group by 1,2
-order by 1,2 asc;</string>
+order by 1,2 asc;
+
+# 6. From the trans table, for account_id 396, sum the amount of transactions for each type (VYDAJ = Outgoing, PRIJEM = Incoming). Your output should have the account_id, the type and the sum of amount, named as total_amount. Sort alphabetically by type.
+select account_id, type, sum(amount) as total_amount
+from trans
+where account_id = 396
+group by 1,2
+order by 2 asc;
+
+# 7. From the previous output, translate the values for type to English, rename the column to transaction_type, round total_amount down to an integer
+select 
+	account_id, 
+	case
+		when type='VYDAJ' then 'OUTGOING'
+		when type='PRIJEM' then 'INCOMING'
+	end as transaction_type, 
+	round(sum(amount),0) as total_amount
+from trans
+where account_id = 396
+group by 1,2
+order by 2 asc;
+
+# 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
+create temporary table incomes
+select 
+	account_id,
+	round(sum(amount),0) as incoming
+from trans
+where type='PRIJEM'
+group by 1;
+
+create temporary table outcomes
+select 
+	account_id,
+	round(sum(amount),0) as outcoming
+from trans
+where type='VYDAJ'
+group by 1;
+
+select incomes.account_id, incoming, outcoming, (incoming-outcoming) as diff
+from incomes
+inner join outcomes on incomes.account_id=outcomes.account_id
+where incomes.account_id = 396;
+
+# 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+select incomes.account_id, (incoming-outcoming) as diff
+from incomes
+inner join outcomes on incomes.account_id = outcomes.account_id
+order by 2 desc
+limit 10;</string>
 			<key>table</key>
 			<string>loan</string>
 			<key>view</key>
@@ -128,96 +177,115 @@ order by 1,2 asc;</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string># 5. From the loan table, for each day in December 1997, count the number of loans issued for each unique loan duration, ordered by date and duration, both in ascending order. You can ignore days without any loans in your output.
-
-select date, duration, count(loan_id)
-from loan
-where date like '9712%'
+		<string># 7. From the previous output, translate the values for type to English, rename the column to transaction_type, round total_amount down to an integer
+select 
+	account_id, 
+	case
+		when type='VYDAJ' then 'OUTGOING'
+		when type='PRIJEM' then 'INCOMING'
+	end as transaction_type, 
+	round(sum(amount),0) as total_amount
+from trans
+where account_id = 396
 group by 1,2
-order by 1,2 asc</string>
-		<string># 4. From the loan table, retrieve the number of loans issued for each day, before (excl) 930907, ordered by date in descending order
-select date, count(loan_id)
-from loan
-where date &lt; 930907
-group by 1
-order by 1 desc</string>
-		<string># 3. Using the loan table, print the top 10 account_ids based on the sum of all of their loan amounts.
-select account_id, sum(amount) as loan_amount
-from loan
-group by 1
+order by 2 asc</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+select incomes.account_id, (incoming-outcoming) as diff
+from incomes
+inner join outcomes on incomes.account_id = outcomes.account_id
 order by 2 desc
 limit 10</string>
-		<string># 3. Using the loan table, print the top 10 account_ids based on the sum of all of their loan amounts.
-select account_id, sum(amount) as loan_amount
-from loan
-group by 1
-order by 2</string>
-		<string># 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
-select type, count(card_id) as card_freq
-from card
-group by 1
-order by 2 desc</string>
-		<string># 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
-select type, count(card_id) as card_freq
-from card
-group by 1
-order by 2</string>
-		<string># 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
-select type
-from card
-group by 1
-order by count(card_id)</string>
-		<string># Lab | SQL - Aggregation
-
-# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
-select district_id, count(client_id) as number_of_client
-from client
-where district_id &lt; 10
-group by 1
-order by 1 asc</string>
-		<string># Lab | SQL - Aggregation
-
-# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
-select district_id, count(client_id)
-from client
-where district_id &lt; 10
-order by 1 asc</string>
-		<string># Lab | SQL - Aggregation
-
-# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
-select distric_id, count(client_id)
-from client
-where district_id &lt; 10
-order by 1 asc</string>
-		<string>use finance</string>
-		<string>create database finance</string>
-		<string>select Id, AppName, AppSize, Genre, TotalRatings
-from Ratings
-where Price = 0</string>
-		<string>select Id, AppName, Genre, TotalRatings
-from Ratings
-where Price = 0</string>
-		<string>select * minus Price
-from Ratings
-where Price = 0</string>
-		<string>select * except Price
-from Ratings
-where Price = 0</string>
-		<string>select ID, AppName, Genre
-from Ratings
-where Price = 0</string>
-		<string>select Genre, avg(Price)
-from Ratings
+		<string>select incomes.account_id, incoming, outcoming, (incoming-outcoming) as diff
+from incomes
+inner join outcomes on incomes.account_id=outcomes.account_id
+where incomes.account_id = 396</string>
+		<string>create temporary table outcomes
+select 
+	account_id,
+	round(sum(amount),0) as outcoming
+from trans
+where type='VYDAJ'
 group by 1</string>
-		<string>select Genre
-from Ratings</string>
-		<string># 4. From the customers table, within the state with the greatest number of customers, find the 3 cities with the greatest number of customers.
-select customer_city
-from customers
-where customer_state = 'SP'
-group by 1
-order by count(distinct customer_unique_id) DESC
-limit 3</string>
+		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
+create temporary table incomes
+select 
+	account_id,
+	round(sum(amount),0) as incoming
+from trans
+where type='PRIJEM'
+group by 1</string>
+		<string>use bank</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+select account.account_id, (incoming-outcoming) as diff
+from account
+left join incomes on account.account_id = incomes.account_id
+left join outcomes on account.account_id = outcomes.account_id
+order by 2 desc
+limit 10</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+select account.account_id, (incoming-outcoming) as diff
+from account
+left join incomes on account.account_id = incomes.account_id
+left join outcomes on account.account_id = outcomes.account_id</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+select account_id, (incoming-outcoming) as diff
+from account
+left join incomes on account.account_id = incomes.account_id
+left join outcomes on account.account_id = outcomes.account_id</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+drop temporary table outcomes</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+select * from incomes</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+drop temporary table incomes</string>
+		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
+update incomes</string>
+		<string>select incomes.account_id, incoming, outcoming, (incoming-outcoming) as diff
+from incomes
+inner join outcomes on incomes.account_id=outcomes.account_id
+where account_id = 396</string>
+		<string>select incomes.account_id, incoming, outcoming, (incoming-outcoming) as diff
+from incomes
+inner join outcomes on incomes.account_id=outcomes.account_id</string>
+		<string>create temporary table outcomes
+select 
+	account_id,
+	round(sum(amount),0) as outcoming
+from trans
+where account_id = 396 and type='VYDAJ'
+group by 1</string>
+		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
+create temporary table incomes
+select 
+	account_id,
+	round(sum(amount),0) as incoming
+from trans
+where account_id = 396 and type='PRIJEM'
+group by 1</string>
+		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
+create temporary table incomes
+select 
+	account_id,
+	round(sum(amount),0) end as incoming
+from trans
+where account_id = 396 and type='PRIJEM'
+group by 1</string>
+		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
+create temporary table incomes
+select 
+	account_id,
+	round(sum(amount),0) end as incoming
+from trans
+where account_id = 396 and type='PRIJEM'
+group by 1,2</string>
+		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
+create temporary table incomes
+select 
+	account_id,
+	round(sum(amount),0) end as incoming,
+from trans
+where account_id = 396 and type='PRIJEM'
+group by 1,2</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
