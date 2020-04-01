@@ -155,14 +155,33 @@ from incomes
 inner join outcomes on incomes.account_id=outcomes.account_id
 where incomes.account_id = 396;
 
+	## Another way to do it without creating to temporary tables and joining them
+select 
+	account_id,
+	round(sum(if(type='PRIJEM',amount,0)),0) as incomes,
+	round(sum(if(type='VYDAJ',amount,0)),0) as outcomes,
+	round(sum(if(type='PRIJEM',amount,0)),0) - round(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+where account_id = 396;
+
 # 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
 select incomes.account_id, (incoming-outcoming) as diff
 from incomes
 inner join outcomes on incomes.account_id = outcomes.account_id
 order by 2 desc
-limit 10;</string>
+limit 10;
+
+	## Another way to do it using to temporary tables and joining them
+select 
+	account_id,
+	round(sum(if(type='PRIJEM',amount,0)),0) - round(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+group by 1
+order by 2 desc
+limit 10;
+</string>
 			<key>table</key>
-			<string>loan</string>
+			<string>trans</string>
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
 			<key>windowVerticalDividerPosition</key>
@@ -177,6 +196,52 @@ limit 10;</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>## Another way to do it without creating to temporary tables and joining them
+select 
+	account_id,
+	round(sum(if(type='PRIJEM',amount,0)),0) - round(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+group by 1
+order by 2 desc
+limit 10</string>
+		<string>## Another way to do it without creating to temporary tables and joining them
+select 
+	account_id,
+	roundup(sum(if(type='PRIJEM',amount,0)),0) - roundup(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+group by 1
+order by 2 desc
+limit 10</string>
+		<string>## Another way to do it without creating to temporary tables and joining them
+select 
+	account_id,
+	round(sum(if(type='PRIJEM',amount,0)),0) - round(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+order by 2 desc
+limit 10</string>
+		<string>## Another way to do it without creating to temporary tables and joining them
+select 
+	account_id,
+	round(sum(if(type='PRIJEM',amount,0)),0) as incomes,
+	round(sum(if(type='VYDAJ',amount,0)),0) as outcomes,
+	round(sum(if(type='PRIJEM',amount,0)),0) - round(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+where account_id = 396</string>
+		<string>select 
+	account_id,
+	round(sum(if(type='PRIJEM',amount,0)),0) as incomes,
+	round(sum(if(type='VYDAJ',amount,0)),0) as outcomes,
+	round(sum(if(type='PRIJEM',amount,0)),0) - round(sum(if(type='VYDAJ',amount,0)),0) as diff
+from trans
+where account_id = 396
+order by 2 desc</string>
+		<string>select 
+	account_id,
+	round(sum(if(type='VYDAJ',amount,0)),0) as outcomes,
+	round(sum(if(type='PRIJEM',amount,0)),0) as incomes
+from trans
+where account_id = 396
+order by 2 desc</string>
 		<string># 7. From the previous output, translate the values for type to English, rename the column to transaction_type, round total_amount down to an integer
 select 
 	account_id, 
@@ -189,6 +254,27 @@ from trans
 where account_id = 396
 group by 1,2
 order by 2 asc</string>
+		<string>select 
+	account_id,
+	sum(if(type='VYDAJ',amount,0)) as outcomes,
+	sum(if(type='PRIJEM',amount,0)) as incomes
+from trans
+where account_id = 396
+order by 2 desc</string>
+		<string>select 
+	account_id,
+	sum(if(type='VYDAJ',round(sum(amount),0),0)) as outcomes,
+	sum(if(type='PRIJEM',round(sum(amount),0),0)) as incomes
+from trans
+where account_id = 396
+order by 2 desc</string>
+		<string>select 
+	accound_id,
+	sum(if(type='VYDAJ',round(sum(amount),0),0)) as outcomes,
+	sum(if(type='PRIJEM',round(sum(amount),0),0)) as incomes
+from trans
+where account_id = 396
+order by 2 desc</string>
 		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
 select incomes.account_id, (incoming-outcoming) as diff
 from incomes
@@ -236,56 +322,6 @@ left join outcomes on account.account_id = outcomes.account_id</string>
 drop temporary table outcomes</string>
 		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
 select * from incomes</string>
-		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
-drop temporary table incomes</string>
-		<string># 9. Continuing with the previous example, rank the top 10 account_ids based on their difference
-update incomes</string>
-		<string>select incomes.account_id, incoming, outcoming, (incoming-outcoming) as diff
-from incomes
-inner join outcomes on incomes.account_id=outcomes.account_id
-where account_id = 396</string>
-		<string>select incomes.account_id, incoming, outcoming, (incoming-outcoming) as diff
-from incomes
-inner join outcomes on incomes.account_id=outcomes.account_id</string>
-		<string>create temporary table outcomes
-select 
-	account_id,
-	round(sum(amount),0) as outcoming
-from trans
-where account_id = 396 and type='VYDAJ'
-group by 1</string>
-		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
-create temporary table incomes
-select 
-	account_id,
-	round(sum(amount),0) as incoming
-from trans
-where account_id = 396 and type='PRIJEM'
-group by 1</string>
-		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
-create temporary table incomes
-select 
-	account_id,
-	round(sum(amount),0) end as incoming
-from trans
-where account_id = 396 and type='PRIJEM'
-group by 1</string>
-		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
-create temporary table incomes
-select 
-	account_id,
-	round(sum(amount),0) end as incoming
-from trans
-where account_id = 396 and type='PRIJEM'
-group by 1,2</string>
-		<string># 8. From the previous result, modify you query so that it returns only one row, with a column for incoming amount, outgoing amount and the difference
-create temporary table incomes
-select 
-	account_id,
-	round(sum(amount),0) end as incoming,
-from trans
-where account_id = 396 and type='PRIJEM'
-group by 1,2</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
