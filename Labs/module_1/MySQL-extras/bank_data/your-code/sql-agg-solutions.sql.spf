@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>finance</string>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>kcid</key>
+			<string>269666288679377033</string>
+			<key>name</key>
+			<string>localhost</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8mb4</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJX
+			TlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAF
+			gAdUdHlwZVRyb3dzXxAdU2VsZWN0aW9uRGV0YWlsVHlwZU5TSW5k
+			ZXhTZXTSFwsYGVxOU1JhbmdlQ291bnQQAIAG0hscHR5aJGNsYXNz
+			bmFtZVgkY2xhc3Nlc1pOU0luZGV4U2V0oh8gWk5TSW5kZXhTZXRY
+			TlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVk
+			QXJjaGl2ZXLRJidUZGF0YYABAAgAEQAaACMALQAyADcAQABGAE0A
+			VQBgAGcAagBsAG4AcQBzAHUAdwB8AIEAoQCmALMAtQC3ALwAxwDQ
+			ANsA3gDpAPIA9wEEAQcBGQEcASEAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1067, 629}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>use finance;
+# Lab | SQL - Aggregation
+
+# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
+select district_id, count(client_id) as number_of_client
+from client
+where district_id &lt; 10
+group by 1
+order by 1 asc;
+
+# 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
+select type, count(card_id) as card_freq
+from card
+group by 1
+order by 2 desc;
+
+# 3. Using the loan table, print the top 10 account_ids based on the sum of all of their loan amounts.
+select account_id, sum(amount) as loan_amount
+from loan
+group by 1
+order by 2 desc
+limit 10;
+
+# 4. From the loan table, retrieve the number of loans issued for each day, before (excl) 930907, ordered by date in descending order
+select date, count(loan_id)
+from loan
+where date &lt; 930907
+group by 1
+order by 1 desc;
+
+# 5. From the loan table, for each day in December 1997, count the number of loans issued for each unique loan duration, ordered by date and duration, both in ascending order. You can ignore days without any loans in your output.
+
+select date, duration, count(loan_id)
+from loan
+where date like '9712%'
+group by 1,2
+order by 1,2 asc;</string>
+			<key>table</key>
+			<string>loan</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string># 5. From the loan table, for each day in December 1997, count the number of loans issued for each unique loan duration, ordered by date and duration, both in ascending order. You can ignore days without any loans in your output.
+
+select date, duration, count(loan_id)
+from loan
+where date like '9712%'
+group by 1,2
+order by 1,2 asc</string>
+		<string># 4. From the loan table, retrieve the number of loans issued for each day, before (excl) 930907, ordered by date in descending order
+select date, count(loan_id)
+from loan
+where date &lt; 930907
+group by 1
+order by 1 desc</string>
+		<string># 3. Using the loan table, print the top 10 account_ids based on the sum of all of their loan amounts.
+select account_id, sum(amount) as loan_amount
+from loan
+group by 1
+order by 2 desc
+limit 10</string>
+		<string># 3. Using the loan table, print the top 10 account_ids based on the sum of all of their loan amounts.
+select account_id, sum(amount) as loan_amount
+from loan
+group by 1
+order by 2</string>
+		<string># 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
+select type, count(card_id) as card_freq
+from card
+group by 1
+order by 2 desc</string>
+		<string># 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
+select type, count(card_id) as card_freq
+from card
+group by 1
+order by 2</string>
+		<string># 2. From the card table, how many cards exist for each type? Rank the result starting with the most frequent type.
+select type
+from card
+group by 1
+order by count(card_id)</string>
+		<string># Lab | SQL - Aggregation
+
+# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
+select district_id, count(client_id) as number_of_client
+from client
+where district_id &lt; 10
+group by 1
+order by 1 asc</string>
+		<string># Lab | SQL - Aggregation
+
+# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
+select district_id, count(client_id)
+from client
+where district_id &lt; 10
+order by 1 asc</string>
+		<string># Lab | SQL - Aggregation
+
+# 1. From the client table, of all districts with a district_id lower than 10, how many clients are from each district_id? Show the results sorted by district_id in ascending order.
+select distric_id, count(client_id)
+from client
+where district_id &lt; 10
+order by 1 asc</string>
+		<string>use finance</string>
+		<string>create database finance</string>
+		<string>select Id, AppName, AppSize, Genre, TotalRatings
+from Ratings
+where Price = 0</string>
+		<string>select Id, AppName, Genre, TotalRatings
+from Ratings
+where Price = 0</string>
+		<string>select * minus Price
+from Ratings
+where Price = 0</string>
+		<string>select * except Price
+from Ratings
+where Price = 0</string>
+		<string>select ID, AppName, Genre
+from Ratings
+where Price = 0</string>
+		<string>select Genre, avg(Price)
+from Ratings
+group by 1</string>
+		<string>select Genre
+from Ratings</string>
+		<string># 4. From the customers table, within the state with the greatest number of customers, find the 3 cities with the greatest number of customers.
+select customer_city
+from customers
+where customer_state = 'SP'
+group by 1
+order by count(distinct customer_unique_id) DESC
+limit 3</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.19</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
